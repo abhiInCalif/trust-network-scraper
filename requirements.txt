@@ -6,7 +6,7 @@ macholib==1.5.1
 matplotlib==1.3.1
 modulegraph==0.10.4
 nltk==3.1
-numpy==1.8.0rc1
+numpy==1.8.0
 py2app==0.7.3
 pymongo==3.0.3
 pyparsing==2.0.1
@@ -15,7 +15,7 @@ python-dateutil==1.5
 pywatchman==0.1
 requests==2.7.0
 scikit-learn==0.17
-scipy==0.13.0b1
+scipy==0.13.0
 six==1.4.1
 textblob==0.10.0
 urlopen==1.0.0
