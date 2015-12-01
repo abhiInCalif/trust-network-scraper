@@ -2,6 +2,8 @@ __author__ = 'abkhanna'
 import lxml.html
 from textblob import TextBlob
 from nltk.tag import pos_tag
+import nltk
+nltk.data.path.append('./nltk_data/')
 
 class Parser:
     def __init__(self):

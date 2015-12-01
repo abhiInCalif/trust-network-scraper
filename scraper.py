@@ -135,7 +135,7 @@ class Scraper:
         try:
             # print "ContentTuple: {0}".format(contentTuple)
             (title, bodyList, image) = contentTuple
-            solr = pysolr.Solr('http://localhost:8983/solr/survivor_stories/', timeout=10)
+            solr = pysolr.Solr('http://52.91.13.38:8983/solr/survivor_stories/', timeout=10)
             solr.add([
                 {
                     "id": link,
@@ -188,7 +188,7 @@ class Scraper:
                         'image': imageList[0].get("src"),
                     }
                     try:
-                        requests.post(url="http://" + "localhost:8080" + "/stories/create", data=data)
+                        requests.post(url="http://" + "trust-network.herokuapp.com" + "/stories/create", data=data)
                     except:
                         pass
                     # Scraper.store_in_solr(link, emotional_score, quality_score, (title, bodyList, imageList))

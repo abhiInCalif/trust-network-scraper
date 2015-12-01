@@ -2,6 +2,8 @@ __author__ = 'abkhanna'
 import re, math
 from collections import Counter
 from textblob import TextBlob
+import nltk
+nltk.data.path.append('./nltk_data/')
 
 WORD = re.compile(r'\w+')
 
