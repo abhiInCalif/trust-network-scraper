@@ -12,7 +12,6 @@ pymongo==3.0.3
 pyparsing==2.0.1
 pysolr==3.3.2
 python-dateutil==1.5
-pywatchman==0.1
 requests==2.7.0
 scikit-learn==0.17
 scipy==0.13.0
