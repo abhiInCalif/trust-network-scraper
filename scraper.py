@@ -12,8 +12,12 @@ import lxml.html
 from parser import Parser
 from quality import CosineSimilarity
 from mlfilters import NearestNeighborFilter
+from textblob import Word
+import nltk
+nltk.data.path.append('./nltk_data/')
 
 BASE_URL = "http://www.bing.com/search?q=ovarian+cancer+survivor+stories"
+QUERY_BASE = "ovarian+cancer+survivor+stories"
 GOLD_STD = "My story: When I was diagnosed with ovarian cancer in July 2007, all I could think of was my family. " \
            "They are my life, my reason to live. I love them all so much. My children lost their father at a young " \
            "age and I couldnt bear the thought that theyd lose me too. And my grandchildren, " \
@@ -74,6 +78,37 @@ class Scraper:
         self.links = []
         pass
 
+    def query_expansion(self, query):
+        # this function takes in the query and expands it using wordnet
+        split_query = query.split("+")
+        list_of_synset_sets = []
+        for term in split_query:
+            synsets = Word(term).synsets
+            syn_names = map(lambda x: x.lemma_names(), synsets)
+            flat_syn_names = reduce(lambda acc, x: acc + x, syn_names)
+            flat_syn_names = reduce(lambda acc, x: acc if x in acc else acc + [x], flat_syn_names, [])
+            list_of_synset_sets.append(flat_syn_names)
+
+        # should be a list of names at this point.
+        # now you can build_combinations out of it.
+        all_combinations = self.build_combinations(list_of_synset_sets[0], list_of_synset_sets[1:])
+        return all_combinations
+
+    def build_combinations(self, hd, tail):
+        if len(tail) == 1:
+            # base case
+            export_list = []
+            for a in hd:
+                export_list.extend(map(lambda x: a + "+" + x, tail[0]))
+            return export_list
+        else:
+            # recurring case
+            export_list = []
+            for a in hd:
+                export_list.extend(map(lambda x: a + "+" + x, self.build_combinations(tail[0], tail[1:])))
+            return export_list
+
+
     def get_bing_links(self, pg):
         print "Getting bing links for page: {0}".format(pg)
         first = (pg - 1) * 14
@@ -81,6 +116,18 @@ class Scraper:
         soup = BeautifulSoup(html, "lxml")
         linkSection = soup.find("ol")
         category_links = [li.h2.a["href"] for li in linkSection.findAll("li", "b_algo")]
+
+        # query expand, grab the links on the other pages as well
+        query_combinations = self.query_expansion(QUERY_BASE)
+        query_expanded_links = map(lambda x: "http://www.bing.com/search?q=" + x, query_combinations)
+
+        for link in query_expanded_links:
+            time.sleep(10)
+            html = urlopen(link + "&first=" + str(first)).read()
+            soup = BeautifulSoup(html, "lxml")
+            linkSection = soup.find("ol")
+            category_links.extend([li.h2.a["href"] for li in linkSection.findAll("li", "b_algo")])
+
         print "Bing links {0}".format(category_links)
         return category_links
 
