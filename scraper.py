@@ -80,10 +80,12 @@ class Scraper:
 
     def query_expansion(self, query):
         # this function takes in the query and expands it using wordnet
+        print "start query_expansion"
         split_query = query.split("+")
         list_of_synset_sets = []
         for term in split_query:
             synsets = Word(term).synsets
+            print "synsets reached"
             syn_names = map(lambda x: x.lemma_names(), synsets)
             flat_syn_names = reduce(lambda acc, x: acc + x, syn_names)
             flat_syn_names = reduce(lambda acc, x: acc if x in acc else acc + [x], flat_syn_names, [])
@@ -92,6 +94,8 @@ class Scraper:
         # should be a list of names at this point.
         # now you can build_combinations out of it.
         all_combinations = self.build_combinations(list_of_synset_sets[0], list_of_synset_sets[1:])
+        print "end query_expansion"
+        print "combinations: {0}".format(all_combinations)
         return all_combinations
 
     def build_combinations(self, hd, tail):
@@ -123,6 +127,7 @@ class Scraper:
 
         for link in query_expanded_links:
             time.sleep(10)
+            print "Grabbing next link {0}".format(link)
             html = urlopen(link + "&first=" + str(first)).read()
             soup = BeautifulSoup(html, "lxml")
             linkSection = soup.find("ol")
