@@ -223,6 +223,7 @@ class Scraper:
             links = self.get_bing_links(i)
             self.links.extend(links)
             for j in range(0, len(self.links)):
+                print "Length of links array: {0}".format(len(self.links))
                 link = self.links[j]
                 (title, bodyList, imageList) = self.get_content_from_pages(link)
                 if title == "" or bodyList == [] or imageList == []:
@@ -262,5 +263,5 @@ def run_program(start, end):
     t = ThreadedScraper(start, end)
     t1 = ThreadedScraper(end + 1, 2 * end - start + 1)
     t.start()
-    t1.start()
+    # t1.start()
 
