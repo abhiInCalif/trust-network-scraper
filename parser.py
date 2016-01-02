@@ -2,6 +2,7 @@ __author__ = 'abkhanna'
 import lxml.html
 from textblob import TextBlob
 from nltk.tag import pos_tag
+from PIL import Image
 import nltk
 nltk.data.path.append('./nltk_data/')
 
@@ -10,7 +11,7 @@ class Parser:
         pass
 
     def blacklist(self, link):
-        blacklist = ["logo", "types", "facebook", "google", "yahoo", "pinterest",
+        blacklist = ["logo", "types", "facebook", "google", "yahoo", "pinterest", "twitter",
                      "spinner", "gif", "register", "icon", "rss", "iad", "preview", "thumb",
                      "mailto"]
         for bl in blacklist:
@@ -49,6 +50,15 @@ class Parser:
 
         return contentBody # not enough info, defaults to contentBody
 
+    def dimension_sort_fun(self, image):
+        if image.get("src", "") is not "":
+            # we have a valid src
+            im = Image.open(image["src"])
+            (w, h) = im.size
+            return w * h
+        else:
+            return 1
+
     def parseImage(self, body):
         # goal of this function is to find out where the image is to show with the
         # text on the app
@@ -66,5 +76,8 @@ class Parser:
             else:
                 if not self.blacklist(image.get("src", "")):
                     filteredImages.append(image)
+
+        # sort the filteredImages by the dimensions of the image.
+        filteredImages = sorted(filteredImages, key=self.dimension_sort_fun)
 
         return filteredImages
