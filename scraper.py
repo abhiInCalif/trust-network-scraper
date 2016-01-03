@@ -122,16 +122,16 @@ class Scraper:
         category_links = [li.h2.a["href"] for li in linkSection.findAll("li", "b_algo")]
 
         # query expand, grab the links on the other pages as well
-        query_combinations = self.query_expansion(QUERY_BASE)
-        query_expanded_links = map(lambda x: "http://www.bing.com/search?q=" + x, query_combinations)
-
-        for link in query_expanded_links:
-            time.sleep(10)
-            print "Grabbing next link {0}".format(link)
-            html = urlopen(link + "&first=" + str(first)).read()
-            soup = BeautifulSoup(html, "lxml")
-            linkSection = soup.find("ol")
-            category_links.extend([li.h2.a["href"] for li in linkSection.findAll("li", "b_algo")])
+        # query_combinations = self.query_expansion(QUERY_BASE)
+        # query_expanded_links = map(lambda x: "http://www.bing.com/search?q=" + x, query_combinations)
+        # 
+        # for link in query_expanded_links:
+        #     time.sleep(10)
+        #     print "Grabbing next link {0}".format(link)
+        #     html = urlopen(link + "&first=" + str(first)).read()
+        #     soup = BeautifulSoup(html, "lxml")
+        #     linkSection = soup.find("ol")
+        #     category_links.extend([li.h2.a["href"] for li in linkSection.findAll("li", "b_algo")])
 
         print "Bing links {0}".format(category_links)
         return category_links
