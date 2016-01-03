@@ -158,9 +158,9 @@ class Scraper:
         # method will be used to scrape and index each of the links we scrape from bing
         # and put into the scraper so that we can rank the files and mark them as relevant.
         try:
-            # html = urlopen(link).read()
+            html = urlopen(link).read()
             # TODO - Fix this to be the line above.
-            html = urlopen("https://en.wikipedia.org/wiki/Malignant_neoplastic_disease").read()
+            # html = urlopen("https://en.wikipedia.org/wiki/Malignant_neoplastic_disease").read()
             soup = BeautifulSoup(html, "lxml")
             self.make_links_absolute(soup, link)
             body = soup.html.body
