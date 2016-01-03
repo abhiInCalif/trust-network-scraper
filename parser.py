@@ -81,6 +81,6 @@ class Parser:
                     filteredImages.append(image)
 
         # sort the filteredImages by the dimensions of the image.
-        filteredImages = sorted(filteredImages, key=self.dimension_sort_fun)
+        filteredImages = list(reversed(sorted(filteredImages, key=self.dimension_sort_fun)))
 
         return filteredImages
