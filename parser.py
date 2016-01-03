@@ -51,6 +51,7 @@ class Parser:
         return contentBody # not enough info, defaults to contentBody
 
     def dimension_sort_fun(self, image):
+        import pdb; pdb.set_trace()
         if image.get("src", "") is not "":
             # we have a valid src
             im = Image.open(image["src"])
