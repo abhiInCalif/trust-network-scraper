@@ -124,7 +124,7 @@ class Scraper:
         # query expand, grab the links on the other pages as well
         # query_combinations = self.query_expansion(QUERY_BASE)
         # query_expanded_links = map(lambda x: "http://www.bing.com/search?q=" + x, query_combinations)
-        # 
+        #
         # for link in query_expanded_links:
         #     time.sleep(10)
         #     print "Grabbing next link {0}".format(link)

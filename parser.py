@@ -3,6 +3,8 @@ import lxml.html
 from textblob import TextBlob
 from nltk.tag import pos_tag
 from PIL import Image
+import urllib
+import cStringIO
 import nltk
 nltk.data.path.append('./nltk_data/')
 
@@ -54,7 +56,8 @@ class Parser:
         import pdb; pdb.set_trace()
         if image.get("src", "") is not "":
             # we have a valid src
-            im = Image.open(image["src"])
+            tmp_file_store = cStringIO.StringIO(urllib.urlopen(image["src"]).read())
+            im = Image.open(tmp_file_store)
             (w, h) = im.size
             return w * h
         else:
